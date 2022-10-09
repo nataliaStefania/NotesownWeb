@@ -5,17 +5,17 @@ class UsuariosModel():
 
     #Login
     @classmethod
-    def login(self,user):
+    def login(self,email):
         try:
             connection = get_connection()
 
             with connection.cursor() as cursor:
-                cursor.execute("SELECT nombres_usuario, apellidos_usuario, correo_usuario, imagen_usuario, id_usuario FROM usuarios WHERE correo_usuario = %s and clave_usuario = %s",(user["email"],user["password"]))
+                cursor.execute("SELECT nombres_usuario, apellidos_usuario, correo_usuario, clave_usuario, imagen_usuario, id_usuario FROM usuarios WHERE correo_usuario = %s",[email])
                 row = cursor.fetchone()
 
                 usuario = None
                 if row != None:
-                        usuario = Usuarios(row[0],row[1],row[2],"",row[3],row[4])
+                        usuario = Usuarios(row[0],row[1],row[2],row[3],row[4],row[5])
                         usuario = usuario.to_JSON()
                     
             connection.close()

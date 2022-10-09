@@ -1,5 +1,7 @@
+from os import access
 from flask import Blueprint, jsonify, request
 from werkzeug.security import check_password_hash, generate_password_hash
+from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_cors import cross_origin
 from utils.token import writeToken
 # Entities
@@ -14,14 +16,34 @@ main = Blueprint('usuario_blueprint',  __name__)
 @main.route('/login', methods = ['POST'])
 def login():
     try:
-        data = request.get_json()
-        response = UsuariosModel.login(data)
-        if response != None:
-            token = writeToken(data=response["id"])
-            #return jsonify({"token": token})
-            return jsonify({"status": "ok", "response": token.decode()}),200
+        password = request.json['password']
+        email = request.json['email']
+
+        user = UsuariosModel.login(email)
+        if user != None:
+            passIsCorrect = check_password_hash(user["passw"], password)
+            if passIsCorrect:
+                refresh = create_refresh_token(identity=user["id"])
+                access = create_refresh_token(identity=user["id"])
+                #token = writeToken(data=user["id"])
+                return jsonify({
+                    "status": "ok",
+
+                    "user": {
+                        "refresh": refresh,
+                        "acces": access,
+                        "email": user["email"],
+                        "name": user["name"],
+                        "lastname": user["lastname"],
+                        "img": user["img"]
+                    },
+
+                    "response": access
+                    }),200
+            else:
+                return jsonify({"status": "fail", "response": "Credenciales inválidas"}),401
         else:
-            return jsonify({"status": "fail", "response": "Usuario o contraseña inválidos"}),200
+            return jsonify({"status": "fail", "response": "Usuario inválido"}),401
     except Exception as ex:
         return jsonify({'message': str(ex)}),500
 
