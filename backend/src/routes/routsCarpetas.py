@@ -33,12 +33,19 @@ def get_carpeta(id):
 def add_carpeta():
     try:
         name = request.json['name']
+        id_editor = request.json['editor']
         carpeta = Carpetas(name)
         print(carpeta)
-        affected_rows = CarpetasModel.add_carpeta(carpeta)
+        response = CarpetasModel.add_carpeta(carpeta)
 
-        if affected_rows == 1:
-            return jsonify('message' f'Carpeta "{carpeta.name}" creada.')
+        if response[0] == 1:
+            id_carpeta = response[1]
+            id_rol = 1
+            affected_rows = CarpetasModel.asignEditor(id_carpeta, id_editor, id_rol)
+            if affected_rows == 1:
+                return jsonify('message' f'Carpeta "{carpeta.name}" creada.')
+            else:
+                return jsonify({'message': "Folder added successfully. Error on asign editor"}), 500
         else:
             return jsonify({'message': "Error on insert"}), 500
         
@@ -65,10 +72,10 @@ def update_carpeta(id):
         return jsonify({'message': str(ex)}),500 
 
 #Eliminar
-@main.route('/delete/<id>', methods = ['DELETE'])
-def delete_carpeta(id):
+@main.route('/delete/<id_owner>/<id_folder>', methods = ['DELETE'])
+def delete_carpeta(id_owner, id_folder):
     try:
-        affected_rows = CarpetasModel.delete_carpeta(id)
+        affected_rows = CarpetasModel.delete_carpeta(id_owner, id_folder)
 
         if affected_rows == 1:
             return jsonify( f'Carpeta con ID {id} borrada satisfactoriamente.')
@@ -76,4 +83,13 @@ def delete_carpeta(id):
             return jsonify({'message': "No folder delete"}), 404
         
     except Exception as ex:
-        return jsonify({'message': str(ex)}),500 
+        return jsonify({'message': str(ex)}),500
+
+#Traer carpetas por panel
+@main.route('/getAllByIdPanel/<id_owner>/<panel>') 
+def getFoldersByIdPanel(id_owner, panel):
+    try:
+        carpetas = CarpetasModel.getFoldersByIdPanel(id_owner, panel)
+        return jsonify(carpetas)
+    except Exception as ex:
+        return jsonify({'message': str(ex)}),500

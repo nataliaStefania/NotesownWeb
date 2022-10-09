@@ -23,7 +23,7 @@ class NotasModel():
         except Exception as ex:
             raise Exception(ex)
     
-     #Buscar uno
+    #Buscar uno
     @classmethod
     def get_nota(self,id):
         try:
@@ -91,5 +91,45 @@ class NotasModel():
 
             connection.close()
             return affected_rows
+        except Exception as ex:
+            raise Exception(ex)
+
+        #Buscar en el contenido de las notas
+    @classmethod
+    def getNoteBySearch(selft, data):
+        try:
+            connection=get_connection()
+            notas=[]
+            print(data['content'])
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT  nombre_nota, descripcion_nota, fk_id_carpeta,  fecha_creacion_nota, fecha_edicion_nota,  ultimo_editor_nota, panel_nota ,id_nota FROM notas INNER JOIN usuarios_notas ON id_nota = fk_id_nota INNER JOIN usuarios ON id_usuario = fk_id_usuario WHERE fk_id_usuario = %s AND descripcion_nota ~* %s", [data['id_user'], data['content']])
+
+                resultset = cursor.fetchall()
+                for row in resultset:
+                        nota  = Notas(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7])
+                        notas.append(nota.to_JSON())
+
+            connection.close()
+            return notas
+        except Exception as ex:
+            raise Exception(ex)
+    
+    #Buscar notas por id usuario 
+    @classmethod
+    def get_nota_usuario(self, id_user):
+        try:
+            connection = get_connection()
+            notas=[]
+            
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT nombre_nota, descripcion_nota, fk_id_carpeta,  fecha_creacion_nota, fecha_edicion_nota,  ultimo_editor_nota, panel_nota ,id_nota FROM notas INNER JOIN usuarios_notas ON id_nota = fk_id_nota INNER JOIN usuarios ON id_usuario = fk_id_usuario WHERE fk_id_usuario = %s", [id_user])
+                
+                resultset = cursor.fetchall()
+                for row in resultset:
+                        nota  = Notas(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7])
+                        notas.append(nota.to_JSON())
+                    
+            connection.close()
+            return notas
         except Exception as ex:
             raise Exception(ex)

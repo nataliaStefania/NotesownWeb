@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 
 from config import config
 
@@ -7,7 +8,8 @@ from routes import routsUsuarios
 from routes import routsCarpetas
 from routes import routsNotas
 
-app=Flask(__name__)
+app = Flask(__name__)
+CORS(app)
 
 def page_not_found(error):
     return "<h1>Not found page</h1>",404

@@ -1,11 +1,29 @@
 from flask import Blueprint, jsonify, request
-
+from werkzeug.security import check_password_hash, generate_password_hash
+from flask_cors import cross_origin
+from utils.token import writeToken
 # Entities
 from models.entities.entiUsuarios import Usuarios
 # Models
 from models.UsuariosModel import UsuariosModel
 
 main = Blueprint('usuario_blueprint',  __name__)
+
+#Login
+@cross_origin
+@main.route('/login', methods = ['POST'])
+def login():
+    try:
+        data = request.get_json()
+        response = UsuariosModel.login(data)
+        if response != None:
+            token = writeToken(data=response["id"])
+            #return jsonify({"token": token})
+            return jsonify({"status": "ok", "response": token.decode()}),200
+        else:
+            return jsonify({"status": "fail", "response": "Usuario o contraseña inválidos"}),200
+    except Exception as ex:
+        return jsonify({'message': str(ex)}),500
 
 #Buscar todos
 @main.route('/') 
@@ -16,11 +34,23 @@ def get_usuarios():
     except Exception as ex:
         return jsonify({'message': str(ex)}),500
 
-#Buscar uno
-@main.route('/<id>')
+#Buscar usuario por ID
+@main.route('getUserByID/<id>')
 def get_usuario(id):
     try:
         usuario = UsuariosModel.get_usuario(id)
+        if usuario != None:
+            return jsonify(usuario)
+        else:
+            return jsonify({}), 404
+    except Exception as ex:
+        return jsonify({'message': str(ex)}),500
+
+#Buscar usuario por Email
+@main.route('getUserByEmail/<email>')
+def getUserByEmail(email):
+    try:
+        usuario = UsuariosModel.getUserByEmail(email)
         if usuario != None:
             return jsonify(usuario)
         else:
@@ -35,15 +65,19 @@ def add_usuario():
         name = request.json['name']
         lastname = request.json['lastname']
         email = request.json['email']
-        passw = request.json['passw']
+        password = request.json['password']
         img = request.json['img']
+
+        if len(password) < 8:
+            return jsonify({'error': "La contraseña debe contener mínimo 8 caracteres."})
         
-        usuario = Usuarios(name,lastname,email,passw,img)
+        pwd_hash = generate_password_hash(password)
+        usuario = Usuarios(name,lastname,email,pwd_hash,img)
 
         affected_rows = UsuariosModel.add_usuario(usuario)
 
         if affected_rows == 1:
-            return jsonify('message' f'Usuario "{name}" creada.')
+            return jsonify({'message' f'Usuario {name} creado.'}), 200
         else:
             return jsonify({'message': "Error on insert"}), 500
         
