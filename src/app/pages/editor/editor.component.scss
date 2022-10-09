@@ -1,0 +1,151 @@
+@import "../../../styles.scss";
+.mainContainer{
+    display: flex;
+}
+.explorer{
+    background-color: $g-bgWhite;
+    width: 350px;
+    min-width: 350px !important;
+    height: 100%;
+    border-right: 1px solid $e-border;
+    padding: 17px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all 0.2s ease-out;
+    .toggleExplorer{
+        position: absolute;
+        top: 50%;
+        right: -18px;
+        z-index: 1;
+        background-color: $g-bgWhite;
+        padding: 10px 7px;
+        border-left: none;
+        border-radius: 0 $n-borderRadius $n-borderRadius 0;
+        border: 1px solid $e-border;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-left: none;
+        img{
+            height: 17px;
+            user-select: none;
+        }
+        &:hover{
+            cursor: pointer;
+            background-color: $a-blue;
+            border-color: $a-blue;
+            img{
+                filter: brightness(5);
+            }
+        }
+    }
+    .navigateButtonsContainer{
+        display: grid;
+        grid-template-columns: 48% 48%;
+        gap: 10px;
+        justify-content: center;
+        margin-left: 0;
+        transition: all 0.2s ease-out;
+        .navigateButton{
+            width: 100%;
+            height: 60px;
+            border-radius: $n-borderRadius;
+            background-color: $a-blue;
+            display: flex;
+            justify-content:center;
+            align-items: center;
+            text-align: center;
+            color: $i-transpMin;
+            user-select: none;
+        }
+        .navigateButton:hover{
+            filter: brightness(1.1);
+            cursor: pointer;
+        }
+
+        .active{
+            color: $g-bgWhite;
+            scale: 1.05;
+            position: relative;
+            filter: saturate(1.7);
+        }
+
+        .active::after{
+            content: "";
+            width: 80%;
+            height: 2px;
+            background-color: $h-transpMax;
+            position: absolute;
+            bottom: 5px;
+            left: 15px;
+            scale: 1.05;
+            border-radius: $n-borderRadius;
+        }
+        #folders{
+            background-color: $a-blue;
+        }
+        #archived{
+            background-color: $b-red;
+        }
+        #shared{
+            background-color: $c-green;
+        }
+        #pinned{
+            background-color: $b-purple;
+        }
+    }
+
+    .panel{
+        //background-color: $a-blue;
+        height: 100%;
+        overflow: auto;
+        margin-top: 25px;
+        padding-right: 7px;
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+    /* &::-webkit-scrollbar-track {
+            background-color: $e-border;
+        } */
+          
+        &::-webkit-scrollbar-thumb {
+            background-color: $e-border;
+            border-radius: 3px;
+        }
+    }
+}
+
+.explorerHiden{
+    margin-left: -350px;
+    transition: all 0.2s ease-out;
+}
+.editorContainer{
+    background-color: $f-bgGray;
+    flex-grow: 1;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+}
+.editor{
+    background-color: $g-bgWhite;
+    height: calc(100% - 40px);
+    margin: 20px 10px 0 10px;
+    border-radius: $n-borderRadius;
+    border: 1px solid $e-border;
+    .titleNote{
+        border-radius: $n-borderRadius;
+        color: $a-blue;
+        padding: 10px 20px;
+        font-weight: bold;
+        font-size: 22px;
+        text-align: center;
+        border: none;
+        width: 100%;
+        outline: none;
+    }
+}

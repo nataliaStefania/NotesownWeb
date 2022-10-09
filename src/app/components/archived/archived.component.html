@@ -1,0 +1,36 @@
+<div class="panelContainer">
+    <div class="headerPanel">
+        <span class="titlePanel">Elementos Archivados</span>
+    </div>
+    <div class="boxEmpty" *ngIf="itemsInPanel == ''">
+        <img class="imgEmpty" src="../../../assets/img/app/boxEmptyRed.svg" alt="Imagen ilustración panel vacío">
+    </div>
+    <ng-container *ngFor="let item of itemsInPanel; index as i">
+        <div class="folder">
+            <div #folder class="headerFolder">
+                <div class="containerName">
+                    <img class="arrowToggleFolder" src="../../../assets/img/app/darkArrow.svg" alt="" (click)="toggleFolder(this.folder)">
+                    <span #nameFolder class="countNotes">{{item.notes.length}}</span>
+                    <span #nameFolder class="nameFolder">{{item.folder.name}}</span>
+                </div>
+                <div class="folderControls">
+                    <img (click)="newNote(this.folder, item.folder.id)" class="menuOptions addNote" src="../../../assets/img/app/addNoteBlue.svg" alt="" title="Agregar nueva nota">
+
+                    <img (click)="contextMenu(item, $event)" class="menuOptions" src="../../../assets/img/app/menuDark.svg" alt="">
+                </div>
+                <div class="switchMenu" (click)="toggleFolder(this.folder)"></div>
+            </div>
+            
+            <div #notesContainer class="notesContainer" [ngClass]="{notesContainerHidden: folderAlter == item.folder.id}">
+                <ng-container *ngFor="let note of item.notes; index as j">
+                    <div #nameNote class="noteInFolder" (click)="selectNote(this.folder, this.nameNote)">{{note.name}}</div>
+                </ng-container>
+                <div *ngIf="item.notes.length == 0" class="noNotes">
+                    <div>Carpeta vacía</div>
+                    <button class="btnPrimary" (click)="newNote(this.notesContainer, item.folder.id)">Nueva nota</button>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<ng-template dynamicMenu></ng-template>

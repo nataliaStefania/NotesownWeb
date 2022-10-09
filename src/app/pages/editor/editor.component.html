@@ -1,0 +1,31 @@
+<app-nav></app-nav>
+<main class="mainContainer">
+    <aside class="explorer" [ngClass]="{explorerHiden: statusExplorer}">
+        <div class="toggleExplorer" (click)="statusExplorer = !statusExplorer"><img src="../../../assets/img/app/menuDark.svg" alt=""></div>
+        <div class="navigateButtonsContainer">
+            <div class="navigateButton active" id="folders" (click)="viewPanel($event, 0)">Mis carpetas</div>
+            <div class="navigateButton" id="archived" (click)="viewPanel($event, 1)">Archivadas</div>
+            <div class="navigateButton" id="shared" (click)="viewPanel($event, 2)">Compartidas conmigo</div>
+            <div class="navigateButton" id="pinned" (click)="viewPanel($event, 3)">Ancladas</div>
+        </div>
+
+        <div class="panel">
+            <app-folders *ngIf="this.folder == 0" (datosNota)="readNote($event)"></app-folders>
+            <app-archived *ngIf="this.folder == 1"></app-archived>
+            <app-shared *ngIf="this.folder == 2"></app-shared>
+            <app-pinned *ngIf="this.folder == 3"></app-pinned>
+        </div>
+    </aside>
+    <div class="editorContainer">
+        <div class="editor">
+            <input type="text" class="titleNote" [(ngModel)]="noteOnEdition.name" (change)="updateNote()">
+            <ckeditor 
+            [editor]="Editor"
+            
+            [(ngModel)]="noteOnEdition.description"
+            [disabled]="isDisabled"
+            (change)="onChange($event)"
+            ></ckeditor>
+        </div>
+    </div>
+</main>

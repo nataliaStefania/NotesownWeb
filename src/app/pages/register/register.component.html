@@ -1,0 +1,48 @@
+<div class="mainContainer">
+    <img class="logo" src="../../../assets/img/app/logoColor.svg" alt="">
+    <div class="formLogin">
+        <span class="title">Crear Cuenta</span>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
+            <div class="itemForm">
+                <label for="">Nombres:</label>
+                <input type="text" placeholder="Nombres" formControlName="name">
+            </div>
+
+            <div class="itemForm">
+                <label for="">Apellidos:</label>
+                <input type="text" placeholder="Apellidos" formControlName="lastname">
+            </div>
+
+            <div class="itemForm">
+                <label for="">Dirección de correo electrónico:</label>
+                <input type="email" placeholder="tucorreo@email.com" formControlName="email">
+            </div>
+
+            <div class="itemForm">
+                <label for="">Contraseña:</label>
+                <input type="password" placeholder="Min. 8 caracteres" formControlName="password">
+            </div>
+
+            <div class="itemForm">
+                <label for="">Confirme contraseña:</label>
+                <input type="password" placeholder="Min. 8 caracteres" formControlName="confirmPass">
+            </div>
+
+            <div class="itemForm">
+                <div class="errorMsj" *ngIf="errorStatus">
+                    {{errorMsj}}
+                </div>
+            </div>
+
+            <div class="itemForm">
+                <input type="submit" class="btnPrimary" value="Registrarme">
+            </div>
+        </form>
+
+        <div class="itemForm itemCreateCount">
+            <label>¿Ya tienes una cuenta?</label>
+            <a href="" class="createCount">Iniciar sesión</a>
+        </div>
+    </div>
+</div>

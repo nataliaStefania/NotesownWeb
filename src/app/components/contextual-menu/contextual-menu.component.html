@@ -1,0 +1,11 @@
+<div #menuContainer class="mainContainer" (mousedown)="destroy($event, this.menuContainer)">
+    <div #menu class="menuContainer">
+        <ul>
+            <li>Propiedades</li>
+            <li>Compartir</li>
+            <li>Archivar</li>
+            <li>Anclar</li>
+            <li *ngIf="menuOptions[0].notes.length == 0" class="dangerOption" (click)="deleteFolder(menuOptions[0].folder.id, this.menuContainer)">Eliminar</li>
+        </ul>
+    </div>
+</div>

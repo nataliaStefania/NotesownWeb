@@ -1,0 +1,31 @@
+<nav>
+    <div class="groupLeft">
+        <img class="logo" src="../../../assets/img/app/logoTransMax.svg" alt="">
+    </div>
+    <div class="groupCenter">
+        <img src="../../../assets/img/app/search.svg" alt="">
+        <input #browser type="text" placeholder="Buscar en tus notas" (keyup)="searchContent(browser.value)">
+        <img class="delete" src="../../../assets/img/app/deleteRed.svg" alt=""(click)="this.browser.value = ''">
+        <div #found class="found" *ngIf="browser.value != ''">
+            
+        </div>
+    </div>
+    <div class="groupRight" (click)="showMenuUser(this.settingsUser)">
+        <div class="buttonMenu">
+            <div></div>
+        </div>
+        <div class="menuNameImage">
+            <span class="userName">{{username}}</span>
+            <img class="avatar" src="../../../assets/img/app/avatarDefault.svg" alt="">
+        </div>
+    </div>
+</nav>
+
+<div class="overlaySettingsUser" #settingsUser (click)="showMenuUser(this.settingsUser)">
+    <div class="settingsUser">
+        <span>Configuraciones</span>
+        <button class="btnPrimary" (click)="logout()">
+            Cerrar sesión
+        </button>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+@import "../../../styles.scss";
+.mainContainer{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 70px;
+    background-color: $f-bgGray;
+    height: 100vh;
+    .logo{
+        margin-bottom: 40px;
+    }
+}
+.formLogin{
+    border-radius: $n-borderRadius;
+    border: 1px solid $e-border;
+    box-shadow: 0 0 18px $j-shadow;
+    background-color: $g-bgWhite;
+    width: 100%;
+    max-width: 400px;
+    padding: 30px 20px;
+    .title{
+        display: block;
+        color: $a-blue;
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 40px;
+        user-select: none;
+    }
+    .itemForm{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        label{
+            color: $d-text;
+            font-size: 13px;
+            margin-bottom: 5px;
+            margin-left: 5px;
+            user-select: none;
+        }
+        input[type=text], input[type=password], input[type=email]{
+            background-color: $g-bgWhite;
+            border: solid 1px $e-border;
+            border-radius: $n-borderRadius;
+            color: $d-text;
+            height: 32px;
+            padding:0 7px;
+            outline-color: $a-blue;
+            &::placeholder{
+                color: $e-border;
+            }
+        }
+        .forgotPass, .createCount{
+            font-size: 12px;
+            align-self: flex-end;
+            margin-top: 5px;
+            margin-right: 5px;
+            color: $a-blue;
+            text-decoration: none;
+            &:hover{
+                filter: saturate(1.7);
+                text-decoration:underline;
+                cursor: pointer;
+            }
+        }
+
+        input[type=submit]{
+            width: calc(100% - 50px);
+            align-self: center;
+            margin-top: 20px;
+            height: 40px;
+            font-size: 16px;
+        }
+
+        .errorMsj{
+            background-color: $b-red;
+            color: $g-bgWhite;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: $n-borderRadius;
+            justify-self: center;
+            width: fit-content;
+            align-self: center;
+            user-select: none;
+        }
+    }
+
+    .itemCreateCount{
+        flex-direction: row;
+        margin-top: 50px;
+        margin-bottom: 0;
+        justify-content: center;
+        label{
+            font-size: 12px;
+        }
+        .createCount{
+            margin: 0;
+            margin-left: 10px;
+            align-self: initial;
+        }
+    }
+}
